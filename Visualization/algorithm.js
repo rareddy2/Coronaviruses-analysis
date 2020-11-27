@@ -19,7 +19,7 @@ var getGrids = function(numRows, numCols) {
     return [scoreRows, pointerRows]
 }
 
-var calculateAlignment = function(sequence1, sequence2) {
+var calculateAlignment = function(sequence1, sequence2, bandwidth) {
     grids = getGrids(sequence1.length + 1, sequence2.length + 1)
     scoreGrid = grids[0]
     pointerGrid = grids[1]

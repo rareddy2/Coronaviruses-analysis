@@ -5,6 +5,7 @@
 var alignButton = $('#alignSequences')
 var sequence1TextBox = $('#sequence1')
 var sequence2TextBox = $('#sequence2')
+var bandwidthTextBox = $('#bandwidth')
 
 var ORIGIN = [0, 0]
 var UP = [-1, 0]
@@ -201,7 +202,8 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
 alignButton.on('click', function() {
     sequence1 = sequence1TextBox.val()
     sequence2 = sequence2TextBox.val()
-    result = calculateAlignment(sequence1, sequence2)
+    bandwidth = bandwidthTextBox.val()
+    result = calculateAlignment(sequence1, sequence2, bandwidth)
     scores = result[0]
     pointers = result[1]
 
