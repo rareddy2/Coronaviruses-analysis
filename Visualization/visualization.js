@@ -6,15 +6,10 @@ var alignButton = $('#alignSequences')
 var sequence1TextBox = $('#sequence1')
 var sequence2TextBox = $('#sequence2')
 
-var LEFT = [-1, 0]
-var UP = [0, -1]
+var ORIGIN = [0, 0]
+var UP = [-1, 0]
+var LEFT = [0, -1]
 var TOPLEFT = [-1, -1]
-
-var calculateAlignment = function(sequence1, sequence2) {
-    M = [[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15], [-1, -1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13], [-2, -2, -1, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11], [-3, -1, -2, 0, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9], [-4, -2, -2, -1, 1, 1, 0, -1, -2, -1, -2, -3, -4, -5, -6, -7], [-5, -3, -1, -2, 0, 0, 0, 1, 0, -1, -2, -3, -4, -3, -4, -5], [-6, -4, -2, 0, -1, -1, -1, 0, 0, 1, 0, -1, -2, -3, -4, -3]]
-    pointers = [[[0, 0], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1]], [[-1, 0], [-1, -1], [-1, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1]], [[-1, 0], [-1, 0], [-1, 0], [-1, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1]], [[-1, 0], [-1, -1], [0, -1], [-1, 0], [-1, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1]], [[-1, 0], [-1, 0], [-1, -1], [-1, 0], [-1, 0], [-1, -1], [0, -1], [0, -1], [0, -1], [-1, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1]], [[-1, 0], [-1, 0], [-1, -1], [0, -1], [-1, 0], [-1, 0], [-1, -1], [-1, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [-1, -1], [0, -1], [0, -1]], [[-1, 0], [-1, 0], [-1, 0], [-1, -1], [0, -1], [-1, 0], [-1, 0], [-1, 0], [-1, -1], [-1, -1], [0, -1], [0, -1], [0, -1], [0, -1], [0, -1], [-1, -1]]]
-    return [M, pointers]
-}
 
 var getPathCells = function(pointers) {
     path = []
@@ -22,9 +17,9 @@ var getPathCells = function(pointers) {
     var curY = pointers[0].length - 1
     while (curX > 0 || curY > 0) {
         path.push([curX, curY])
-        if (pointers[curX][curY][0] == UP[0] && pointers[curX][curY][1] == UP[1]) {
+        if (pointers[curX][curY][0] == LEFT[0] && pointers[curX][curY][1] == LEFT[1]) {
             curY = curY - 1
-        } else if (pointers[curX][curY][0] == LEFT[0] && pointers[curX][curY][1] == LEFT[1]) {
+        } else if (pointers[curX][curY][0] == UP[0] && pointers[curX][curY][1] == UP[1]) {
             curX = curX - 1
         } else {
             curX = curX - 1
@@ -76,12 +71,12 @@ var getGridData = function(numX, numY, widthPixels, heightPixels, sequenceWidth,
             var x2 = null
             var y2 = null
             if (column > 0 && row > 0) {
-                if ((column == 1 && row != 1) || (pointers[column - 1][row - 1][0] == UP[0] && pointers[column - 1][row - 1][1] == UP[1]) && row != 1) {
+                if ((column == 1 && row != 1) || (pointers[column - 1][row - 1][0] == LEFT[0] && pointers[column - 1][row - 1][1] == LEFT[1]) && row != 1) {
                     x1 = (xpos + (width / 2.0))
                     y1 = ypos + 7
                     x2 = (xpos + (width / 2.0))
                     y2 = ypos - 7
-                } else if ((row == 1 && column != 1) || (pointers[column - 1][row - 1][0] == LEFT[0] && pointers[column - 1][row - 1][1] == LEFT[1]) && column != 1) {
+                } else if ((row == 1 && column != 1) || (pointers[column - 1][row - 1][0] == UP[0] && pointers[column - 1][row - 1][1] == UP[1]) && column != 1) {
                     x1 = xpos + 7
                     y1 = (ypos + (height / 2.0))
                     x2 = xpos - 7
@@ -206,11 +201,9 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
 alignButton.on('click', function() {
     sequence1 = sequence1TextBox.val()
     sequence2 = sequence2TextBox.val()
-    sequence1 = "TAGATA"
-    sequence2 = "GTAGGCTTAAGGTTA"
     result = calculateAlignment(sequence1, sequence2)
     scores = result[0]
     pointers = result[1]
 
-    createGrid(M.length, M[0].length, sequence1, sequence2, scores, pointers)
+    createGrid(scores.length, scores[0].length, sequence1, sequence2, scores, pointers)
 })
