@@ -120,6 +120,8 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
     heightPixels = heightPixels - margin.top - margin.bottom
     var gridData = getGridData(width, height, widthPixels, heightPixels, sequenceWidth, sequenceHeight, scores, pointers)
 
+    d3.select('svg').remove()
+
     var svg = d3.select('#output').append('svg')
         .attr('id', 'svg')
         .attr('width', widthPixels + margin.left + margin.right)
@@ -163,6 +165,8 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
         .style('fill', function(d) {
             if (d.isOnPath) {
                 return "#f7e672"
+            } else if (!isNaN(d.letter) && !isNaN(parseFloat(d.letter))) {
+                return "#b8e8a5"
             } else {
                 return "#fff"
             }
