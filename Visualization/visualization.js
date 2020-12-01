@@ -6,6 +6,9 @@ var alignButton = $('#alignSequences')
 var sequence1TextBox = $('#sequence1')
 var sequence2TextBox = $('#sequence2')
 var bandwidthTextBox = $('#bandwidth')
+var matchTextBox = $('#match')
+var mismatchTextBox = $('#mismatch')
+var gapTextBox = $('#gap')
 
 var ORIGIN = [0, 0]
 var UP = [-1, 0]
@@ -301,6 +304,18 @@ alignButton.on('click', function() {
     bandwidth = parseInt(bandwidthTextBox.val())
     if (!bandwidth) {
         bandwidth = Number.POSITIVE_INFINITY
+    }
+    match_score = parseInt(matchTextBox.val())
+    if (!match_score) {
+        match_score = 1
+    }
+    mismatch_score = parseInt(mismatchTextBox.val())
+    if (!mismatch_score) {
+        mismatch_score = -1
+    }
+    gap_score = parseInt(gapTextBox.val())
+    if (!gap_score) {
+        gap_score = -1
     }
     result = calculateAlignment(sequence1, sequence2, bandwidth)
     scores = result[0]
