@@ -24,10 +24,10 @@ var getLimits = function(sequence1, sequence2, bandwidth) {
     var xLim = sequence2.length + 1
     if (bandwidth < Math.min(sequence1.length, sequence2.length)) {
         if (sequence1.length < sequence2.length) {
-            yLim = bandwidth + 1
+            yLim = bandwidth
             xLim = sequence2.length + 1 - (sequence1.length + 1 - bandwidth)
         } else {
-            xLim = bandwidth + 1
+            xLim = bandwidth
             yLim = sequence1.length + 1 - (sequence2.length + 1 - bandwidth)
         }
     }
@@ -68,16 +68,16 @@ var calculateAlignment = function(sequence1, sequence2, bandwidth) {
         }
 
         for (var j = lowerYLim; j < upperYLim; j++) {
-        		if (!scoreGrid[i][j - 1]) {
-            		insertValue = Number.NEGATIVE_INFINITY
+        	if (scoreGrid[i][j - 1] == null) {
+                insertValue = Number.NEGATIVE_INFINITY
             } else {
-            		insertValue = scoreGrid[i][j - 1] - 1
+            	insertValue = scoreGrid[i][j - 1] - 1
             }
             
-            if (!scoreGrid[i - 1][j]) {
-            		deleteValue = Number.NEGATIVE_INFINITY
+            if (scoreGrid[i - 1][j] == null) {
+                deleteValue = Number.NEGATIVE_INFINITY
             } else {
-            		deleteValue = scoreGrid[i - 1][j] - 1
+            	deleteValue = scoreGrid[i - 1][j] - 1
             }
             
             matchValue = 0
@@ -98,7 +98,6 @@ var calculateAlignment = function(sequence1, sequence2, bandwidth) {
                 scoreGrid[i][j] = matchValue
                 pointerGrid[i][j] = TOPLEFT
             }
-            
         }
     }
     return [scoreGrid, pointerGrid]
