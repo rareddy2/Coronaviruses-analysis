@@ -34,7 +34,7 @@ var getLimits = function(sequence1, sequence2, bandwidth) {
     return [xLim, yLim]
 }
 
-var calculateAlignment = function(sequence1, sequence2, bandwidth) {
+var calculateAlignment = function(sequence1, sequence2, bandwidth, match_score, mismatch_score, gap_score) {
 		
     var grids = getGrids(sequence1.length + 1, sequence2.length + 1)
     var scoreGrid = grids[0]
@@ -48,12 +48,12 @@ var calculateAlignment = function(sequence1, sequence2, bandwidth) {
     pointerGrid[0][0] = ORIGIN
 
     for (var i = 1; i < xLim; i++) {
-        scoreGrid[i][0] = scoreGrid[i - 1][0] - 1
+        scoreGrid[i][0] = scoreGrid[i - 1][0] + gap_score
         pointerGrid[i][0] = UP
     }
     
     for (var j = 1; j < upperYLim; j++) {
-        scoreGrid[0][j] = scoreGrid[0][j - 1] - 1
+        scoreGrid[0][j] = scoreGrid[0][j - 1] + gap_score
         pointerGrid[0][j] = LEFT
     }
     
@@ -71,20 +71,20 @@ var calculateAlignment = function(sequence1, sequence2, bandwidth) {
         	if (scoreGrid[i][j - 1] == null) {
                 insertValue = Number.NEGATIVE_INFINITY
             } else {
-            	insertValue = scoreGrid[i][j - 1] - 1
+            	insertValue = scoreGrid[i][j - 1] + gap_score
             }
             
             if (scoreGrid[i - 1][j] == null) {
                 deleteValue = Number.NEGATIVE_INFINITY
             } else {
-            	deleteValue = scoreGrid[i - 1][j] - 1
+            	deleteValue = scoreGrid[i - 1][j] + gap_score
             }
             
             matchValue = 0
             if (sequence1.charAt(i - 1) == sequence2.charAt(j - 1) ) {
-                matchValue = scoreGrid[i - 1][j - 1] + 1
+                matchValue = scoreGrid[i - 1][j - 1] + match_score
             } else {
-                matchValue = scoreGrid[i - 1][j - 1] - 1
+                matchValue = scoreGrid[i - 1][j - 1] + mismatch_score
             }
             minScore = Math.max(insertValue, deleteValue, matchValue)
 

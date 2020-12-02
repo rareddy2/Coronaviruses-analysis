@@ -301,23 +301,31 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
 alignButton.on('click', function() {
     sequence1 = sequence1TextBox.val()
     sequence2 = sequence2TextBox.val()
-    bandwidth = parseInt(bandwidthTextBox.val())
-    if (!bandwidth) {
+    bandwidth = bandwidthTextBox.val()
+    if (bandwidth == "") {
         bandwidth = Number.POSITIVE_INFINITY
+    } else {
+        bandwidth = parseInt(bandwidth)
     }
-    match_score = parseInt(matchTextBox.val())
-    if (!match_score) {
+    match_score = matchTextBox.val()
+    if (match_score == "") {
         match_score = 1
+    } else {
+        match_score = parseInt(match_score)
     }
-    mismatch_score = parseInt(mismatchTextBox.val())
-    if (!mismatch_score) {
+    mismatch_score = mismatchTextBox.val()
+    if (mismatch_score == "") {
         mismatch_score = -1
+    } else {
+        mismatch_score = parseInt(mismatch_score)
     }
-    gap_score = parseInt(gapTextBox.val())
-    if (!gap_score) {
+    gap_score = gapTextBox.val()
+    if (gap_score == "") {
         gap_score = -1
+    } else {
+        gap_score = parseInt(gap_score)
     }
-    result = calculateAlignment(sequence1, sequence2, bandwidth)
+    result = calculateAlignment(sequence1, sequence2, bandwidth, match_score, mismatch_score, gap_score)
     scores = result[0]
     pointers = result[1]
 
