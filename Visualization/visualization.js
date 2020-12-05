@@ -34,6 +34,30 @@ var getPathCells = function(pointers) {
     return path
 }
 
+var getOptimalAlignment = function(pointers, sequence1, sequence2) {
+    var alignment1 = ""
+    var alignment2 = ""
+    var curY = sequence1.length
+    var curX = sequence2.length
+    while (curY > 0 || curX > 0) {
+        if (pointers[curY][curX][0] == UP[0] && pointers[curY][curX][1] == UP[1]) {
+            alignment1 = sequence1[curY - 1] + alignment1
+            alignment2 = "-" + alignment2
+            curY = curY - 1
+        } else if (pointers[curY][curX][0] == LEFT[0] && pointers[curY][curX][1] == LEFT[1]) {
+            alignment1 = "-" + alignment1
+            alignment2 = sequence2[curX - 1] + alignment2
+            curX = curX - 1
+        } else {
+            alignment1 = sequence1[curY - 1] + alignment1
+            alignment2 = sequence2[curX - 1] + alignment2
+            curY = curY - 1
+            curX = curX - 1
+        }
+    }
+    return [alignment1, alignment2]
+}
+
 var isOnPath = function(path, x, y) {
     for (var i = 0; i < path.length; i++) {
         if (path[i][0] == x && path[i][1] == y) {
@@ -207,7 +231,7 @@ var calculateAlignment = function(sequence1, sequence2, bandwidth) {
 }
 
 
-var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, pointers) {
+var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, pointers, sequence1, sequence2) {
     var heightPixels = window.innerHeight / 1.2
     var widthPixels = window.innerWidth / 2.0
     var margin = {top: 20, right: 50, bottom: 20, left: 50}
@@ -219,8 +243,8 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
 
     var svg = d3.select('#output').append('svg')
         .attr('id', 'svg')
-        .attr('width', widthPixels + margin.left + margin.right)
-        .attr('height', heightPixels + margin.top + margin.bottom)
+        .attr('width', window.innerWidth)
+        .attr('height', window.innerHeight)
 
     svg.append('defs')
         .append('marker')
@@ -296,6 +320,36 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
                 return 'visible'
             }
         })
+
+    var optimalAlignment = getOptimalAlignment(pointers, sequence1, sequence2)
+    var optimalScore = gridData[height][width].letter
+    var outputTextString = "Optimal Alignment is: \n\t\t" + optimalAlignment[0] + "\n\t\t" + optimalAlignment[1] + "\nOptimal Score is: " + optimalScore
+
+    var textBlock = svg.append('text')
+        .attr("x", widthPixels + 140)
+        .attr("y", heightPixels / 4.0)
+        .attr('text-anchor', 'left')
+        .attr('font-size', '25px')
+
+    textBlock.append('tspan')
+        .text('Optimal Alignment is:')
+        .attr('class', 'title')
+
+    textBlock.append('tspan')
+        .text(optimalAlignment[0])
+        .attr('x', widthPixels + 180)
+        .attr('y', (heightPixels / 4.0) + 30)
+
+    textBlock.append('tspan')
+        .text(optimalAlignment[1])
+        .attr('x', widthPixels + 180)
+        .attr('y', (heightPixels / 4.0) + 60)
+
+    textBlock.append('tspan')
+        .text("Optimal Score is: " + optimalScore)
+        .attr('x', widthPixels + 140)
+        .attr('y', (heightPixels / 4.0) + 90)
+
 }
 
 alignButton.on('click', function() {
@@ -329,5 +383,5 @@ alignButton.on('click', function() {
     scores = result[0]
     pointers = result[1]
 
-    createGrid(scores.length, scores[0].length, sequence1, sequence2, scores, pointers)
+    createGrid(scores.length, scores[0].length, sequence1, sequence2, scores, pointers, sequence1, sequence2)
 })
