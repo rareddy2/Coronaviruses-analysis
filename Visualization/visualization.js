@@ -1,7 +1,5 @@
 // Command to run locally: python -m http.server
 
-// From the algorithm: There will be a len(w) + 1 by len(v) + 1 2d array of pointers and scores
-
 var alignButton = $('#alignSequences')
 var sequence1TextBox = $('#sequence1')
 var sequence2TextBox = $('#sequence2')
