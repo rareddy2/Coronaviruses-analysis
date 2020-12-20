@@ -358,6 +358,18 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
         .attr('font-weight', 'bold')
         .attr('font-family', 'monospace')
 
+    var bbox = textBlock.node().getBBox()
+
+    var textBorder = svg.append('rect')
+        .attr('x', bbox.x - 10.0)
+        .attr('y', bbox.y - 10.0)
+        .attr('width', bbox.width + 20.0)
+        .attr('height', bbox.height + 20.0)
+        .style('stroke', 'black')
+        .style('stroke-width', '3px')
+        .style('fill', 'white')
+        .style('opacity', 0.3)
+
 }
 
 alignButton.on('click', function() {
