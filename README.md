@@ -5,4 +5,4 @@ The COVID-19 pandemic has affected the world in so many different, unfathomable 
 In the Coronaviruses-analysis directory, run the following command: "python -m http.server". The visualization should be running on port 8000, and can be seen by going to "http://localhost:8000/Visualization/".
 
 # Running the Analysis
-All of the analysis is in a Jupyter notebook called "Analysis.ipynb".
+All of the analysis is in a Jupyter notebook called "Analysis.ipynb". If you're unable to open the notebook on github, copy and paste the link onto [this](https://nbviewer.jupyter.org/) website
