@@ -321,32 +321,42 @@ var createGrid = function(width, height, sequenceWidth, sequenceHeight, scores, 
 
     var optimalAlignment = getOptimalAlignment(pointers, sequence1, sequence2)
     var optimalScore = gridData[height][width].letter
-    var outputTextString = "Optimal Alignment is: \n\t\t" + optimalAlignment[0] + "\n\t\t" + optimalAlignment[1] + "\nOptimal Score is: " + optimalScore
 
     var textBlock = svg.append('text')
         .attr("x", widthPixels + 140)
         .attr("y", heightPixels / 4.0)
         .attr('text-anchor', 'left')
-        .attr('font-size', '25px')
+        .attr('font-size', '26px')
 
     textBlock.append('tspan')
-        .text('Optimal Alignment is:')
+        .text("Optimal Alignment: ")
         .attr('class', 'title')
 
     textBlock.append('tspan')
         .text(optimalAlignment[0])
-        .attr('x', widthPixels + 180)
-        .attr('y', (heightPixels / 4.0) + 30)
+        .attr('x', widthPixels + 380)
+        .attr('y', (heightPixels / 4.0))
+        .attr('font-family', 'monospace')
+        .attr('font-weight', 'bold')
 
     textBlock.append('tspan')
         .text(optimalAlignment[1])
-        .attr('x', widthPixels + 180)
-        .attr('y', (heightPixels / 4.0) + 60)
+        .attr('x', widthPixels + 380)
+        .attr('y', (heightPixels / 4.0) + 30)
+        .attr('font-family', 'monospace')
+        .attr('font-weight', 'bold')
 
     textBlock.append('tspan')
-        .text("Optimal Score is: " + optimalScore)
+        .text("Optimal Score:")
         .attr('x', widthPixels + 140)
         .attr('y', (heightPixels / 4.0) + 90)
+
+    textBlock.append('tspan')
+        .text(optimalScore)
+        .attr('x', widthPixels + 320)
+        .attr('y', (heightPixels / 4.0) + 90)
+        .attr('font-weight', 'bold')
+        .attr('font-family', 'monospace')
 
 }
 
